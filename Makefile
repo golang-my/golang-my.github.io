@@ -1,7 +1,6 @@
 all: build
 	git add -A
-	msg="rebuilding site `date`"
-	git commit -S -m "$msg"
+	git commit -S -m "rebuilding site `date`"
 
 build:
 	hugo -t academic
