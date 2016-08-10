@@ -1,4 +1,4 @@
-baseurl = "https://golang.my"
+baseurl = "https://golang.my/"
 title = "Golang Malaysia"
 copyright = "Copyleft 2016 Malaysian Golang User Group"
 languageCode = "en-us"
