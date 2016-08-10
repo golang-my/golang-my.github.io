@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang Malaysia</title>
+    <link>https://golang.my/</link>
+    <description>Recent content on Golang Malaysia</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyleft 2016 Malaysian Golang User Group</copyright>
+    <lastBuildDate>Wed, 10 Aug 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://golang.my/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Poll for August&#39;s meetup</title>
+      <link>https://golang.my/project/meetup-august-poll/</link>
+      <pubDate>Wed, 10 Aug 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://golang.my/project/meetup-august-poll/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>about</title>
+      <link>https://golang.my/home/about/</link>
+      <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://golang.my/home/about/</guid>
+      <description>
+
+&lt;h1 id=&#34;welcome&#34;&gt;Welcome&lt;/h1&gt;
+
+&lt;p&gt;Most discussions are happening on the &lt;a href=&#34;https://www.facebook.com/groups/mygolang/&#34;&gt;Facebook Group&lt;/a&gt;. The intention of this site is to collect knowledge sharing via blog posts.&lt;/p&gt;
+
+&lt;h3 id=&#34;current-agenda&#34;&gt;Current Agenda&lt;/h3&gt;
+
+&lt;p&gt;We&amp;rsquo;re trying to host a meetup at least once a month on the last Tuesday.&lt;/p&gt;
+
+&lt;h3 id=&#34;community-driven&#34;&gt;Community driven&lt;/h3&gt;
+
+&lt;p&gt;Anybody can contribute to this site. Just check out and submit us your pull request.&lt;/p&gt;
+
+&lt;p&gt;The repository is at [&lt;a href=&#34;https://github.com/golang-my/golang-my.github.io&#34;&gt;https://github.com/golang-my/golang-my.github.io&lt;/a&gt;].&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Tutorial coming soon&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
