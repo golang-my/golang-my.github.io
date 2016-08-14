@@ -7,15 +7,27 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyleft 2016 Malaysian Golang User Group</copyright>
-    <lastBuildDate>Wed, 10 Aug 2016 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 14 Aug 2016 21:06:48 +0800</lastBuildDate>
     <atom:link href="https://golang.my/project/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Poll for August&#39;s meetup</title>
-      <link>https://golang.my/project/meetup-august-poll/</link>
+      <title>Meetup August 2016</title>
+      <link>https://golang.my/project/meetup-august-2016/</link>
+      <pubDate>Sun, 14 Aug 2016 21:06:48 +0800</pubDate>
+      
+      <guid>https://golang.my/project/meetup-august-2016/</guid>
+      <description>&lt;p&gt;The meetup falls on 30th August 2016. Come join us for a go-ful 2016 Merdeka Eve celebration.&lt;/p&gt;
+
+&lt;p&gt;RSVP &lt;a href=&#34;https://www.meetup.com/Golang-Kuala-Lumpur/events/233345998/&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Poll for 2016 August&#39;s meetup</title>
+      <link>https://golang.my/project/meetup-august-2016-poll/</link>
       <pubDate>Wed, 10 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://golang.my/project/meetup-august-poll/</guid>
+      <guid>https://golang.my/project/meetup-august-2016-poll/</guid>
       <description></description>
     </item>
     
