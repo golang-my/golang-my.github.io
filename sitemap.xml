@@ -12,6 +12,11 @@
   </url>
   
   <url>
+    <loc>https://golang.my/post/fizzbuzz/</loc>
+    <lastmod>2016-08-13T10:42:53+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://golang.my/post/contrib-howto/</loc>
     <lastmod>2016-08-12T11:05:39+08:00</lastmod>
   </url>
