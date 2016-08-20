@@ -184,7 +184,7 @@
 
 <p>Even though the current code looks good enough, <code>fmt.Println</code> is actually a io operation.</p>
 
-<p>Once the write buffer is big enough, the output will be contaminated, ie part of line 1 will have fragment of line 3.</p>
+<p>If the write buffer is big enough, you will notice the output is contaminated, ie part of line 1 will have fragment of line 3.</p>
 
 <p>To avoid undesirable side effect, we&rsquo;ll apply multiplexing.</p>
 
@@ -212,7 +212,7 @@ main ========&gt; fizzbuzzWorker | 1 | ========&gt; printWorker
 
 <script src="//gist.github.com/klrkdekira/6edb0a66a618532b9c411f388fed7b42.js"></script>
 
-<p><a href="https://play.golang.org/p/z0ak0vaHXE">Playground Link</a>)</p>
+<p><a href="https://play.golang.org/p/z0ak0vaHXE">Playground Link</a></p>
 
 <p>As you can see, the last part is declared first, aka in our example the <code>printWorker</code> and <code>outputChan</code>.</p>
 
