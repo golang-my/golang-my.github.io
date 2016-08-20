@@ -23,7 +23,7 @@
     </item>
     
     <item>
-      <title>Go routine and channel explained with fizzbuzz</title>
+      <title>Multiplexing fizzbuzz</title>
       <link>https://golang.my/post/fizzbuzz/</link>
       <pubDate>Sat, 13 Aug 2016 10:42:53 +0800</pubDate>
       
