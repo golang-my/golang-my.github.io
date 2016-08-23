@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme" content="hugo-academic">
+    <meta name="generator" content="Hugo 0.17-DEV" />
+    <meta name="author" content="Golang Malaysia">
+    
+
+    <link rel="stylesheet" href="https://golang.my/css/highlight.min.css">
+    <link rel="stylesheet" href="https://golang.my/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://golang.my/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://golang.my/css/academicons.min.css">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700|Merriweather|Roboto+Mono">
+    <link rel="stylesheet" href="https://golang.my/css/hugo-academic.css">
+    
+
+
+    <link rel="shortcut icon" href="https://golang.my/img/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="https://golang.my/post/http_round_robin/">
+
+    <title>Easy round robin with net/http | Golang Malaysia</title>
+
+</head>
+<body id="top">
+
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+    <div class="container">
+
+        
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://golang.my/">Golang Malaysia</a>
+        </div>
+
+        
+        <div class="collapse navbar-collapse" id="#navbar-collapse-1">
+
+            
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li class="nav-item"><a href="https://golang.my/#top">Home</a></li>
+                
+                <li class="nav-item"><a href="https://golang.my/post/">Posts</a></li>
+                
+                <li class="nav-item"><a href="https://golang.my/#projects">Meetups</a></li>
+                
+                <li class="nav-item"><a href="https://golang.my/post/contrib-howto/">Contributing</a></li>
+                
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <article class="article" itemscope itemtype="http://schema.org/Article">
+
+        
+
+        <h1 itemprop="name">Easy round robin with net/http</h1>
+
+        
+
+<div class="article-metadata">
+
+    <span class="article-date">
+        <time datetime="2016-08-23 19:32:34 &#43;0800 MYT" itemprop="datePublished">Tue, Aug 23, 2016</time>
+    </span>
+
+    
+    
+    
+    <span class="article-tags">
+        <i class="fa fa-tags"></i>
+        
+        <a class="article-tag-link" href="https://golang.my/tags/golang">golang</a>, 
+        
+        <a class="article-tag-link" href="https://golang.my/tags/net/http">net/http</a>, 
+        
+        <a class="article-tag-link" href="https://golang.my/tags/roundrobin">roundrobin</a>, 
+        
+        <a class="article-tag-link" href="https://golang.my/tags/handler">handler</a>
+        
+    </span>
+    
+    
+
+    
+        
+<div class="share-box">
+    <ul class="share">
+        <li>
+            <a class="facebook" href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fgolang.my%2fpost%2fhttp_round_robin%2f" target="_blank">
+                <i class="fa fa-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a class="twitter" href="https://twitter.com/intent/tweet?text=Easy%20round%20robin%20with%20net%2fhttp&amp;url=https%3a%2f%2fgolang.my%2fpost%2fhttp_round_robin%2f" target="_blank">
+                <i class="fa fa-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fgolang.my%2fpost%2fhttp_round_robin%2f&amp;title=Easy%20round%20robin%20with%20net%2fhttp" target="_blank">
+                <i class="fa fa-linkedin"></i>
+            </a>
+        </li>
+        <li>
+            <a class="weibo" href="http://service.weibo.com/share/share.php?url=https%3a%2f%2fgolang.my%2fpost%2fhttp_round_robin%2f&amp;title=Easy%20round%20robin%20with%20net%2fhttp" target="_blank">
+                <i class="fa fa-weibo"></i>
+            </a>
+        </li>
+        <li>
+            <a class="email" href="mailto:?subject=Easy%20round%20robin%20with%20net%2fhttp&amp;body=https%3a%2f%2fgolang.my%2fpost%2fhttp_round_robin%2f">
+                <i class="fa fa-envelope"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+    
+
+</div>
+
+
+        <div class="article-style" itemprop="articleBody">
+            
+
+<p>By <a href="https://github.com/klrkdekira">Chee Leong</a></p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Golang came bundled with a pretty comprehensive HTTP Standard Library a.k.a <a href="https://golang.org/pkg/net/http/">net/http</a>.</p>
+
+<p>I&rsquo;m going to show you how to do a simple round robin HTTP server with Golang&rsquo;s Duck Typing a.k.a <strong>Handler</strong> interface.</p>
+
+<p>And because Golang Playground doesn&rsquo;t work well with HTTP server, I&rsquo;m not going to provide the link, so you have to download the script and run it yourself.</p>
+
+<h2 id="basic">Basic</h2>
+
+<p>So, let&rsquo;s start with the boilerplate we&rsquo;re going to use for the rest of the guide.</p>
+
+<p>We will be creating a program that starts a HTTP server and a client to request the HTTP server, then exit.</p>
+
+<script src="//gist.github.com/klrkdekira/49ee872b2e0c493d6b3d01c641c0f695.js"></script>
+
+<p>First, it&rsquo;s very important to know <strong>Server.Handler</strong> accepts a <strong>Handler</strong> interface.</p>
+
+<p>So right now we set up a server that respond <strong>Hello, World!</strong> that runs on <strong>127.0.0.1:9090</strong></p>
+
+<p>For the following part is just the boilerplate of a HTTP request,</p>
+
+<ol>
+<li>Create a <strong>Request</strong> object.</li>
+<li>Call <strong>Client.Do</strong>.</li>
+<li>Read the response.</li>
+<li>Print the response.</li>
+</ol>
+
+<p>Notice I call fatal whenever an error occurs, this is very important.</p>
+
+<p><strong>Rule, fail as soon as possible, fail quick and loudly is better than late and silently.</strong>.</p>
+
+<h2 id="custom-handler">Custom Handler</h2>
+
+<p>Now, we&rsquo;re going to create our own <strong>Handler</strong> so we can perform our tricks later.</p>
+
+<script src="//gist.github.com/klrkdekira/95b4b9ff43659e2de781d552455ec12d.js"></script>
+
+<p>As you can see, we&rsquo;ve added <strong>RobinHood</strong>, an empty struct.</p>
+
+<p>Since <strong>RobinHood</strong> implemented ServeHTTP(http.ResponseWriter, *http.Request), it fulfills and qualifies as <strong>Handler</strong>.</p>
+
+<h2 id="basic-load-balancer">Basic Load Balancer</h2>
+
+<p>Let&rsquo;s implement our basic round robin <strong>Handler</strong></p>
+
+<script src="//gist.github.com/klrkdekira/188b981402118d8b5c5136c3d08861bc.js"></script>
+
+<p>As you can see, I&rsquo;ve added several attributes to the <strong>RobinHood</strong> struct, let&rsquo;s go through</p>
+
+<ul>
+<li>counter - keep track of current state to know which handler to call.</li>
+<li>mu - mutual exclusive lock to maintain integrity of <strong>counter</strong></li>
+<li>one, two, three - http handler funcs</li>
+</ul>
+
+<p><strong>ServeHTTP</strong> for <strong>RobinHood</strong> is also updated to serve the handler funcs in a round robin manner.</p>
+
+<p>I&rsquo;ve also put the bootstrapping of <strong>RobinHood</strong> as the function <strong>newRobinHood</strong>, just to avoid typing that over and over again.</p>
+
+<p><strong>newHandlerFunc</strong> is added also to save me from repeating the handler func boilerplate.</p>
+
+<p>To demonstrate the working of our basic round robin engine, I&rsquo;m running the the HTTP request in a loop of 5.</p>
+
+<p>Run this and you should expect the same output as the included <strong>response.txt</strong>.</p>
+
+<h2 id="chaining-http-handlers">Chaining HTTP Handlers</h2>
+
+<p>Now, instead of hacking and limit ourselves to only 3 handler funcs, we can actually implement a round robin of a list of HTTP Handlers.</p>
+
+<p>The changes involved are very small.</p>
+
+<script src="//gist.github.com/klrkdekira/b6899a334466cfc2c81906b0f00a35af.js"></script>
+
+<p>I&rsquo;ve removed <strong>one</strong>, <strong>two</strong>, <strong>three</strong>, added <strong>handler</strong> a slice of <strong>http.Handler</strong>. Updated the <strong>newRobinHood</strong> bootstrapper.</p>
+
+<p><strong>newHandlerFunc</strong> is also removed and now <strong>newHandler</strong> is added since we are accepting <strong>Handler</strong> instead.</p>
+
+<p>Now, we are not limited to the predefined handler func capacity that <strong>RobinHood</strong> used to have.</p>
+
+<p>See line <code>45-46</code>, with just a few lines of change, we made <strong>RobinHood</strong> more scalable. And that&rsquo;s about it.</p>
+
+<h2 id="bonus">Bonus</h2>
+
+<p>However, there&rsquo;s one more trick I want to show.</p>
+
+<script src="//gist.github.com/klrkdekira/90be7ace5c0fb7f80b98ff60ed21579c.js"></script>
+
+<p>We can actually modify the pool of handlers.</p>
+
+<p>I&rsquo;ve added <strong>AddHandler</strong>, a way to slot in handler, of course with the similar code, you can remove or modify the sequence of Handlers.</p>
+
+<p><strong>Note</strong> The mutex lock is very important in this.</p>
+
+<p>At <code>line 86</code>, I put in a new handler and request the server 5 times again. Check the results.</p>
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+<li><a href="https://gobyexample.com/interfaces">Go by Example - Interface</a></li>
+<li><a href="https://golang.org/pkg/net/http/#Handler">net/http Handler</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Duck_typing">Duck typing</a></li>
+</ul>
+
+        </div>
+
+    </article>
+
+    <nav>
+    <ul class="pager">
+        
+        <li class="previous"><a href="https://golang.my/post/fizzbuzz/"><span aria-hidden="true">&larr;</span> Multiplexing fizzbuzz</a></li>
+        
+
+        
+    </ul>
+</nav>
+
+    
+<section id="comments">
+    <div id="disqus_thread">
+        <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'golang-malaysia';
+    var disqus_identifier = 'https:\/\/golang.my\/post\/http_round_robin\/';
+    var disqus_title = 'Easy round robin with net\/http';
+    var disqus_url = 'https:\/\/golang.my\/post\/http_round_robin\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</section>
+
+
+
+</div>
+<footer class="site-footer">
+    <div class="container">
+        <p class="powered-by">
+
+            Copyleft 2016 Malaysian Golang User Group &middot; 
+
+            Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+            <span class="pull-right"><a href="#" id="back_to_top"><span class="button_icon"><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i></span></a></span>
+
+        </p>
+    </div>
+</footer>
+
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+        <script src="https://golang.my/js/jquery-1.12.3.min.js"></script>
+        <script src="https://golang.my/js/bootstrap.min.js"></script>
+        <script src="https://golang.my/js/hugo-academic.js"></script>
+        
+
+        
+
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+
+    </body>
+</html>
+
